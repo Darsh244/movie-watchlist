@@ -1,0 +1,43 @@
+{% extends 'watchlist/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>My Watchlist</h2>
+    <ul id="sortable">
+        {% for item in items %}
+        <li data-id="{{ item.id }}" class="movie-item {% if item.watched %}watched{% endif %}">
+            <img src="{{ item.movie.poster }}" alt="{{ item.movie.title }} poster">
+            <div class="movie-info">
+                <strong>{{ item.movie.title }} ({{ item.movie.release_year }})</strong>
+                <p><strong>Rating:</strong> {{ item.rating|default:"N/A" }}</p>
+                <p><strong>Watched:</strong> {{ item.watched }}</p>
+                <p><strong>Notes:</strong> {{ item.notes|default:"None" }}</p>
+                <div class="movie-actions">
+                    <a href="{% url 'edit_watchlist_item' item.pk %}">Edit</a>
+                    <a href="{% url 'delete_watchlist_item' item.pk %}">Delete</a>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+  const sortable = new Sortable(document.getElementById('sortable'), {
+    animation: 150,
+    onEnd: function () {
+      const order = [...document.querySelectorAll('.movie-item')].map(item => item.dataset.id);
+      fetch('', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams(order.map(id => ['order[]', id]))
+      });
+    }
+  });
+</script>
+{% endblock %}

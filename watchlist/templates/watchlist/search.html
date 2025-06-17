@@ -1,0 +1,23 @@
+{% extends 'watchlist/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Search Movies</h2>
+    <form method="get">
+        <input type="text" name="q" placeholder="Search for a movie..." required>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if results %}
+        <ul class="movie-list">
+            {% for movie in results %}
+                <li>
+                    <img src="{{ movie.poster }}" alt="{{ movie.title }}">
+                    <h3>{{ movie.title }} ({{ movie.year }})</h3>
+                    <a href="{% url 'add_to_watchlist' movie.tmdb_id %}">Add to Watchlist</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

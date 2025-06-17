@@ -1,0 +1,13 @@
+{% extends 'watchlist/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit: {{ item.movie.title }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <p style="margin-top: 1rem;"><a href="{% url 'mywatchlist' %}" style="color:#007bff;">← Back to Watchlist</a></p>
+</div>
+{% endblock %}

@@ -17,3 +17,4 @@ typing_extensions==4.14.0
 urllib3==2.2.3
 virtualenv==20.29.1
 psycopg[binary]
+gunicorn
